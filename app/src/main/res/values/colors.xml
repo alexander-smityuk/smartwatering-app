@@ -6,4 +6,7 @@
 
     <color name="textColorPrimary">#212121</color>
     <color name="fragmentBackgroundColor">#eeeeee</color>
+    <color name="materialBlue">#2196F3</color>
+    <color name="materialYellow">#FFC107</color>
+    <color name="materialGrey">#BDBDBD</color>
 </resources>
