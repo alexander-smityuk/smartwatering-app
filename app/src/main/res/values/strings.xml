@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">SmartWateringApp</string>
+    <string name="app_name">Smart Watering</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>
