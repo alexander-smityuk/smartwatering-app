@@ -5,4 +5,8 @@
 
     <string name="navigation_main">Главная</string>
     <string name="navigation_timetable">Расписание</string>
+
+    <string name="error">Произошла ошибка</string>
+
+
 </resources>
