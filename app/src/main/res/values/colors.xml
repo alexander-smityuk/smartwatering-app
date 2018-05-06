@@ -5,4 +5,5 @@
     <color name="colorAccent">#4CAF50</color>
 
     <color name="textColorPrimary">#212121</color>
+    <color name="fragmentBackgroundColor">#eeeeee</color>
 </resources>

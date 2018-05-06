@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Smart Watering</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_connection">ConnectionActivity</string>
+
+    <string name="navigation_main">Главная</string>
+    <string name="navigation_timetable">Расписание</string>
 </resources>
