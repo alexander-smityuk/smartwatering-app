@@ -10,6 +10,7 @@ import com.things.smartwateringapp.App
 import com.things.smartwateringapp.R
 import com.things.smartwateringapp.di.home.HomeModule
 import com.things.smartwateringapp.domain.entity.DataInfo
+import com.things.smartwateringapp.domain.entity.Status
 import com.things.smartwateringapp.presentation.home.HomePresenter
 import com.things.smartwateringapp.presentation.home.HomeView
 import com.things.smartwateringapp.ui.BaseFragment
@@ -45,9 +46,19 @@ class HomeFragment : BaseFragment(), HomeView {
 
         presenter.bindView(this)
         presenter.getDataInfo()
+        presenter.getStatusInfo()
 
         swiperefresh.setOnRefreshListener {
             presenter.getDataInfo()
+            presenter.getStatusInfo()
+        }
+
+        manualWaterSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            presenter.putWaterStatus(isChecked)
+        }
+
+        autoWaterSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            presenter.putAutoStatus(isChecked)
         }
     }
 
@@ -67,6 +78,11 @@ class HomeFragment : BaseFragment(), HomeView {
 
         setupHumidityChart(info.humidity.toFloat())
         setupSoilMoistureChart(info.soilMoisture.toFloat())
+    }
+
+    override fun showStatusInfo(status: Status) {
+        manualWaterSwitch.isChecked = status.waterStatus
+        autoWaterSwitch.isChecked = status.autoStatus
     }
 
     override fun showError(message: Int) {

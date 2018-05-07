@@ -2,6 +2,7 @@ package com.things.smartwateringapp.presentation.home
 
 import com.things.smartwateringapp.R
 import com.things.smartwateringapp.domain.entity.DataInfo
+import com.things.smartwateringapp.domain.entity.Status
 import com.things.smartwateringapp.domain.interactor.home.HomeInteractor
 import com.things.smartwateringapp.presentation.BasePresenter
 import javax.inject.Inject
@@ -27,11 +28,35 @@ class HomePresenter @Inject constructor(private val interactor: HomeInteractor) 
         }
     }
 
+    fun getStatusInfo() {
+        view?.let {
+            interactor.getStatusInfo()
+                    .subscribe(this::handleSuccessGetStatusInfo, this::handleErrorGetStatusInfo)
+                    .connect()
+        }
+    }
+
+    fun putWaterStatus(waterStatus: Boolean){
+        interactor.putWaterStatus(waterStatus)
+    }
+
+    fun putAutoStatus(autoStatus: Boolean){
+        interactor.putAutoStatus(autoStatus)
+    }
+
     private fun handleSuccessGetDataInfo(dataInfo: DataInfo) {
         view?.showInfo(dataInfo)
     }
 
     private fun handleErrorGetDataInfo(throwable: Throwable) {
+        view?.showError(R.string.error)
+    }
+
+    private fun handleSuccessGetStatusInfo(status: Status) {
+        view?.showStatusInfo(status)
+    }
+
+    private fun handleErrorGetStatusInfo(throwable: Throwable) {
         view?.showError(R.string.error)
     }
 }
