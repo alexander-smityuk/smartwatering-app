@@ -11,4 +11,9 @@
     <string name="humidity_percentage">Влажность: %d%%</string>
     <string name="soil_moisture_percentage">Влажность почвы: %d%%</string>
 
+    <string name="manual_water_txt">Ручной полив</string>
+    <string name="auto_water_txt">Автоматический полив</string>
+
+    <string name="water_txt">Полив</string>
+
 </resources>

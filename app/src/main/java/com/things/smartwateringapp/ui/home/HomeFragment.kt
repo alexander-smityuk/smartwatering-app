@@ -1,6 +1,5 @@
 package com.things.smartwateringapp.ui.home
 
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -43,8 +42,13 @@ class HomeFragment : BaseFragment(), HomeView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         presenter.bindView(this)
         presenter.getDataInfo()
+
+        swiperefresh.setOnRefreshListener {
+            presenter.getDataInfo()
+        }
     }
 
     override fun onDestroyView() {
@@ -55,6 +59,8 @@ class HomeFragment : BaseFragment(), HomeView {
     }
 
     override fun showInfo(info: DataInfo) {
+        swiperefresh.isRefreshing = false
+
         humidityText.text = String.format(Locale.getDefault(), resources.getString(R.string.humidity_percentage), info.humidity)
         soilMoistureText.text = String.format(Locale.getDefault(), resources.getString(R.string.soil_moisture_percentage), info.soilMoisture)
         temperature.text = "${info.temperature}°C"
@@ -64,7 +70,7 @@ class HomeFragment : BaseFragment(), HomeView {
     }
 
     override fun showError(message: Int) {
-
+        showSnackMessage(getString(R.string.error))
     }
 
     private fun setupHumidityChart(humidity: Float) {
