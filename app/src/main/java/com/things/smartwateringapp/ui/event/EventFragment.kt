@@ -1,6 +1,7 @@
 package com.things.smartwateringapp.ui.event
 
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.things.smartwateringapp.App
 import com.things.smartwateringapp.R
@@ -19,6 +20,8 @@ class EventFragment : BaseFragment(), EventView {
     @Inject
     lateinit var presenter: EventPresenter
 
+    private val adapter : EventListAdapter = EventListAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,8 +37,11 @@ class EventFragment : BaseFragment(), EventView {
         presenter.bindView(this)
         presenter.getEvents()
 
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
+
         fab.setOnClickListener({
-            presenter.saveEvent(Event("test", 2321341245545, false))
+            presenter.saveEvent(Event("Полив цветка", System.currentTimeMillis(), false))
         })
     }
 
@@ -45,7 +51,7 @@ class EventFragment : BaseFragment(), EventView {
     }
 
     override fun showEvents(events: List<Event>) {
-
+        adapter.bind(events)
     }
 
     override fun showError(message: Int) {
