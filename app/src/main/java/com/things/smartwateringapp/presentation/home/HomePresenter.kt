@@ -20,8 +20,9 @@ class HomePresenter @Inject constructor(private val interactor: HomeInteractor) 
         dispose()
     }
 
-    fun getDataInfo() {
+    fun getDataInfo(forceUpdate: Boolean) {
         view?.let {
+            if (!forceUpdate) it.showProgress()
             interactor.getDataInfo()
                     .subscribe(this::handleSuccessGetDataInfo, this::handleErrorGetDataInfo)
                     .connect()
@@ -36,27 +37,39 @@ class HomePresenter @Inject constructor(private val interactor: HomeInteractor) 
         }
     }
 
-    fun putWaterStatus(waterStatus: Boolean){
+    fun putWaterStatus(waterStatus: Boolean) {
         interactor.putWaterStatus(waterStatus)
     }
 
-    fun putAutoStatus(autoStatus: Boolean){
+    fun putAutoStatus(autoStatus: Boolean) {
         interactor.putAutoStatus(autoStatus)
     }
 
     private fun handleSuccessGetDataInfo(dataInfo: DataInfo) {
-        view?.showInfo(dataInfo)
+        view?.let {
+            it.hideProgress()
+            it.showInfo(dataInfo)
+        }
     }
 
     private fun handleErrorGetDataInfo(throwable: Throwable) {
-        view?.showError(R.string.error)
+        view?.let {
+            it.hideProgress()
+            it.showError(R.string.error)
+        }
     }
 
     private fun handleSuccessGetStatusInfo(status: Status) {
-        view?.showStatusInfo(status)
+        view?.let {
+            it.hideProgress()
+            it.showStatusInfo(status)
+        }
     }
 
     private fun handleErrorGetStatusInfo(throwable: Throwable) {
-        view?.showError(R.string.error)
+        view?.let {
+            it.hideProgress()
+            it.showError(R.string.error)
+        }
     }
 }

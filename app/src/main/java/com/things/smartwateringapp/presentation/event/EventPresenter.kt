@@ -22,7 +22,7 @@ class EventPresenter @Inject constructor(private val interactor: EventInteractor
 
     fun getEvents(){
         view?.let{
-
+            it.showProgress()
             interactor.getEvents()
                     .subscribe(this::handleSuccessGetEvents, this::handleErrorGetEvents)
                     .connect()
@@ -34,10 +34,17 @@ class EventPresenter @Inject constructor(private val interactor: EventInteractor
     }
 
     private fun handleSuccessGetEvents(events: List<Event>) {
-        view?.showEvents(events)
+        view?.let{
+            it.hideProgress()
+            it.showEvents(events)
+        }
+
     }
 
     private fun handleErrorGetEvents(throwable: Throwable) {
-        view?.showError(R.string.error)
+        view?.let{
+            it.hideProgress()
+            it.showError(R.string.error)
+        }
     }
 }

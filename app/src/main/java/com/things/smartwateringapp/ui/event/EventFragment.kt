@@ -54,6 +54,16 @@ class EventFragment : BaseFragment(), EventView {
         adapter.bind(events)
     }
 
+    override fun showProgress() {
+        rootLayout.visibility = View.GONE
+        progress.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        rootLayout.visibility = View.VISIBLE
+        progress.visibility = View.GONE
+    }
+
     override fun showError(message: Int) {
         showSnackMessage(getString(message))
     }

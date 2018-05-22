@@ -45,11 +45,11 @@ class HomeFragment : BaseFragment(), HomeView {
         super.onViewCreated(view, savedInstanceState)
 
         presenter.bindView(this)
-        presenter.getDataInfo()
+        presenter.getDataInfo(false)
         presenter.getStatusInfo()
 
         swiperefresh.setOnRefreshListener {
-            presenter.getDataInfo()
+            presenter.getDataInfo(true)
             presenter.getStatusInfo()
         }
 
@@ -83,6 +83,16 @@ class HomeFragment : BaseFragment(), HomeView {
     override fun showStatusInfo(status: Status) {
         manualWaterSwitch.isChecked = status.waterStatus
         autoWaterSwitch.isChecked = status.autoStatus
+    }
+
+    override fun showProgress() {
+        rootLayout.visibility = View.GONE
+        progress.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        rootLayout.visibility = View.VISIBLE
+        progress.visibility = View.GONE
     }
 
     override fun showError(message: Int) {
