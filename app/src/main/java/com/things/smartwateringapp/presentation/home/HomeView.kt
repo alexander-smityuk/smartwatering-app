@@ -8,4 +8,6 @@ interface HomeView : BaseView {
     fun showInfo(info: DataInfo)
 
     fun showStatusInfo(status: Status)
+
+    fun showPlantType(type: Int)
 }

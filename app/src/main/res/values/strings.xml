@@ -16,4 +16,12 @@
 
     <string name="water_txt">Полив</string>
 
+    <string-array name="types">
+        <item>Кактус</item>
+        <item>Фикус</item>
+        <item>Драцена</item>
+        <item>Бегония</item>
+        <item>Калатея</item>
+    </string-array>
+
 </resources>

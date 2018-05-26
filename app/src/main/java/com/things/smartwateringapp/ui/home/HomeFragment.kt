@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.widget.AdapterView
 import com.hookedonplay.decoviewlib.charts.SeriesItem
 import com.hookedonplay.decoviewlib.events.DecoEvent
 import com.things.smartwateringapp.App
@@ -17,6 +18,8 @@ import com.things.smartwateringapp.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 import javax.inject.Inject
+import android.widget.ArrayAdapter
+import kotlinx.android.synthetic.main.event_item.*
 
 
 class HomeFragment : BaseFragment(), HomeView {
@@ -47,6 +50,11 @@ class HomeFragment : BaseFragment(), HomeView {
         presenter.bindView(this)
         presenter.getDataInfo(false)
         presenter.getStatusInfo()
+        presenter.getPlantType()
+
+        val adapter = ArrayAdapter.createFromResource(context, R.array.types, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
 
         swiperefresh.setOnRefreshListener {
             presenter.getDataInfo(true)
@@ -59,6 +67,15 @@ class HomeFragment : BaseFragment(), HomeView {
 
         autoWaterSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             presenter.putAutoStatus(isChecked)
+        }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                presenter.putPlantType(position + 1)
+            }
         }
     }
 
@@ -76,6 +93,10 @@ class HomeFragment : BaseFragment(), HomeView {
         soilMoistureText.text = String.format(Locale.getDefault(), resources.getString(R.string.soil_moisture_percentage), info.soilMoisture)
         temperature.text = "${info.temperature}°C"
 
+        //TODO: Change
+        status.text = "Статус : ожидает"
+        date.text = "30 May, 18:30"
+
         setupHumidityChart(info.humidity.toFloat())
         setupSoilMoistureChart(info.soilMoisture.toFloat())
     }
@@ -83,6 +104,10 @@ class HomeFragment : BaseFragment(), HomeView {
     override fun showStatusInfo(status: Status) {
         manualWaterSwitch.isChecked = status.waterStatus
         autoWaterSwitch.isChecked = status.autoStatus
+    }
+
+    override fun showPlantType(type: Int) {
+        spinner.setSelection(type - 1)
     }
 
     override fun showProgress() {
