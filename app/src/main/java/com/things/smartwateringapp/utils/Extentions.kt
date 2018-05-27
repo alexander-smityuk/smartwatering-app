@@ -13,3 +13,12 @@ fun ViewGroup.inflate(layoutRes: Int): View {
 fun Long.toDateString() : String {
     return SimpleDateFormat("dd MMMM, HH:mm", Locale.getDefault()).format(Date(this))
 }
+
+fun Calendar.isSameDay(date: Long): Boolean {
+    val cal = Calendar.getInstance()
+    cal.time = Date(date)
+
+    return if (cal == null) false else cal[Calendar.ERA] == this[Calendar.ERA]
+            && cal[Calendar.YEAR] == this[Calendar.YEAR]
+            && cal[Calendar.DAY_OF_YEAR] == this[Calendar.DAY_OF_YEAR]
+}

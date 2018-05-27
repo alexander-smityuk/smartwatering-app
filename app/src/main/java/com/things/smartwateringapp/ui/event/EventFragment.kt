@@ -1,8 +1,10 @@
 package com.things.smartwateringapp.ui.event
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.things.smartwateringapp.App
 import com.things.smartwateringapp.R
 import com.things.smartwateringapp.di.event.EventModule
@@ -12,6 +14,7 @@ import com.things.smartwateringapp.presentation.event.EventView
 import com.things.smartwateringapp.ui.BaseFragment
 import kotlinx.android.synthetic.main.fragment_event.*
 import javax.inject.Inject
+
 
 class EventFragment : BaseFragment(), EventView {
 
@@ -37,6 +40,9 @@ class EventFragment : BaseFragment(), EventView {
         presenter.bindView(this)
         presenter.getEvents()
 
+        calendarView.currentDate = CalendarDay.today()
+        calendarView.setOnDateChangedListener { widget, date, selected -> presenter.getEventsByDay(date)}
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
@@ -50,8 +56,12 @@ class EventFragment : BaseFragment(), EventView {
         presenter.unbindView()
     }
 
-    override fun showEvents(events: List<Event>) {
+    override fun showEventsByDate(events: List<Event>) {
         adapter.bind(events)
+    }
+
+    override fun showCalendarEvents(events: List<CalendarDay>) {
+        calendarView.addDecorator(EventDecorator(ContextCompat.getColor(context!!, R.color.colorPrimary), events))
     }
 
     override fun showProgress() {
