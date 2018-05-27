@@ -18,6 +18,12 @@
     <string name="plant_type_txt">Тип растения</string>
     <string name="new_water_txt">Следующий полив</string>
 
+    <string name="create_dialog_title">Следующий полив</string>
+    <string name="create_dialog">Следующий полив</string>
+    <string name="water_hint">Полив</string>
+    <string name="date_hint">Дата</string>
+    <string name="time_hint">Время</string>
+
     <string-array name="types">
         <item>Кактус</item>
         <item>Фикус</item>

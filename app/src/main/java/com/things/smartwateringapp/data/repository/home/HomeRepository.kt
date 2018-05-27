@@ -53,6 +53,7 @@ class HomeRepository @Inject constructor(private val database: FirebaseDatabase)
                 .toObservable()
                 .flatMapIterable { it }
                 .filter { it.dateTime > System.currentTimeMillis() }
+                .sorted { event1, event2 -> (event1.dateTime - event2.dateTime).toInt() }
                 .firstOrError()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
