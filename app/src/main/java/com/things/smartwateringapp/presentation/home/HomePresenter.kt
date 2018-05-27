@@ -2,6 +2,7 @@ package com.things.smartwateringapp.presentation.home
 
 import com.things.smartwateringapp.R
 import com.things.smartwateringapp.domain.entity.DataInfo
+import com.things.smartwateringapp.domain.entity.Event
 import com.things.smartwateringapp.domain.entity.Status
 import com.things.smartwateringapp.domain.entity.Type
 import com.things.smartwateringapp.domain.interactor.home.HomeInteractor
@@ -42,6 +43,14 @@ class HomePresenter @Inject constructor(private val interactor: HomeInteractor) 
         view?.let {
             interactor.getPlantType()
                     .subscribe(this::handleSuccessGetPlantType, this::handleErrorGetPlantType)
+                    .connect()
+        }
+    }
+
+    fun getNearestEvent(){
+        view?.let {
+            interactor.getNearestEvent()
+                    .subscribe(this::handleSuccessGetNearestEvent, this::handleErrorGetNearestEvent)
                     .connect()
         }
     }
@@ -97,6 +106,20 @@ class HomePresenter @Inject constructor(private val interactor: HomeInteractor) 
         view?.let {
             it.hideProgress()
             it.showError(R.string.error)
+        }
+    }
+
+    private fun handleSuccessGetNearestEvent(event: Event) {
+        view?.let {
+            it.hideProgress()
+            it.showNearestEvent(event)
+        }
+    }
+
+    private fun handleErrorGetNearestEvent(throwable: Throwable) {
+        view?.let {
+            it.hideProgress()
+            it.hideNearestEvent()
         }
     }
 }

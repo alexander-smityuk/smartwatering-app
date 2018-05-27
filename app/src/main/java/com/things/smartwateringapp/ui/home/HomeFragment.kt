@@ -5,21 +5,23 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.hookedonplay.decoviewlib.charts.SeriesItem
 import com.hookedonplay.decoviewlib.events.DecoEvent
 import com.things.smartwateringapp.App
 import com.things.smartwateringapp.R
 import com.things.smartwateringapp.di.home.HomeModule
 import com.things.smartwateringapp.domain.entity.DataInfo
+import com.things.smartwateringapp.domain.entity.Event
 import com.things.smartwateringapp.domain.entity.Status
 import com.things.smartwateringapp.presentation.home.HomePresenter
 import com.things.smartwateringapp.presentation.home.HomeView
 import com.things.smartwateringapp.ui.BaseFragment
+import com.things.smartwateringapp.utils.toDateString
+import kotlinx.android.synthetic.main.event_item.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 import javax.inject.Inject
-import android.widget.ArrayAdapter
-import kotlinx.android.synthetic.main.event_item.*
 
 
 class HomeFragment : BaseFragment(), HomeView {
@@ -51,6 +53,7 @@ class HomeFragment : BaseFragment(), HomeView {
         presenter.getDataInfo(false)
         presenter.getStatusInfo()
         presenter.getPlantType()
+        presenter.getNearestEvent()
 
         val adapter = ArrayAdapter.createFromResource(context, R.array.types, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -93,10 +96,6 @@ class HomeFragment : BaseFragment(), HomeView {
         soilMoistureText.text = String.format(Locale.getDefault(), resources.getString(R.string.soil_moisture_percentage), info.soilMoisture)
         temperature.text = "${info.temperature}°C"
 
-        //TODO: Change
-        status.text = "Статус : ожидает"
-        date.text = "30 May, 18:30"
-
         setupHumidityChart(info.humidity.toFloat())
         setupSoilMoistureChart(info.soilMoisture.toFloat())
     }
@@ -108,6 +107,22 @@ class HomeFragment : BaseFragment(), HomeView {
 
     override fun showPlantType(type: Int) {
         spinner.setSelection(type - 1)
+    }
+
+    override fun showNearestEvent(eventData: Event) {
+        event.visibility = View.VISIBLE
+        newWaterTxt.visibility = View.VISIBLE
+
+        if(eventData.isDone)
+            status.text = "Статус : выполнен"
+        else
+            status.text = "Статус : ожидает"
+        date.text = eventData.dateTime.toDateString()
+    }
+
+    override fun hideNearestEvent() {
+        event.visibility = View.GONE
+        newWaterTxt.visibility = View.GONE
     }
 
     override fun showProgress() {
