@@ -1,6 +1,7 @@
 package com.things.smartwateringapp.domain.interactor.home
 
-import com.things.smartwateringapp.data.repository.home.HomeRepository
+import com.things.smartwateringapp.data.repository.event.EventRepository
+import com.things.smartwateringapp.data.repository.info.InfoRepository
 import com.things.smartwateringapp.domain.entity.DataInfo
 import com.things.smartwateringapp.domain.entity.Event
 import com.things.smartwateringapp.domain.entity.Status
@@ -9,33 +10,33 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 
-class HomeInteractor @Inject constructor(private val repository: HomeRepository) {
+class HomeInteractor @Inject constructor(private val infoRepository: InfoRepository, private val eventRepository: EventRepository) {
 
     fun getDataInfo() : Single<DataInfo> {
-        return repository.getDataInfo()
+        return infoRepository.getDataInfo()
     }
 
     fun getStatusInfo() : Single<Status>{
-        return repository.getStatusInfo()
+        return infoRepository.getStatusInfo()
     }
 
     fun putWaterStatus(waterStatus: Boolean){
-        repository.putWaterStatus(waterStatus)
+        infoRepository.putWaterStatus(waterStatus)
     }
 
     fun putAutoStatus(autoStatus: Boolean){
-        repository.putAutoStatus(autoStatus)
+        infoRepository.putAutoStatus(autoStatus)
     }
 
     fun putPlantType(type: Int){
-        repository.putPlantType(type)
+        infoRepository.putPlantType(type)
     }
 
     fun getPlantType() : Single<Type>{
-        return repository.getPlantType()
+        return infoRepository.getPlantType()
     }
 
     fun getNearestEvent() : Single<Event> {
-        return repository.getNearestEvent()
+        return eventRepository.getNearestEvent()
     }
 }

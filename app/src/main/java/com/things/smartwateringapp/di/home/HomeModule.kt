@@ -1,7 +1,8 @@
 package com.things.smartwateringapp.di.home
 
 import com.google.firebase.database.FirebaseDatabase
-import com.things.smartwateringapp.data.repository.home.HomeRepository
+import com.things.smartwateringapp.data.repository.event.EventRepository
+import com.things.smartwateringapp.data.repository.info.InfoRepository
 import com.things.smartwateringapp.domain.interactor.home.HomeInteractor
 import com.things.smartwateringapp.presentation.home.HomePresenter
 import dagger.Module
@@ -12,14 +13,14 @@ class HomeModule {
 
     @Provides
     @HomeScope
-    fun provideHomeRepository(database: FirebaseDatabase): HomeRepository {
-        return HomeRepository(database)
+    fun provideHomeRepository(database: FirebaseDatabase): InfoRepository {
+        return InfoRepository(database)
     }
 
     @Provides
     @HomeScope
-    fun provideHomeInteractor(repository: HomeRepository): HomeInteractor {
-        return HomeInteractor(repository)
+    fun provideHomeInteractor(repository: InfoRepository, eventRepository: EventRepository): HomeInteractor {
+        return HomeInteractor(repository, eventRepository)
     }
 
     @Provides

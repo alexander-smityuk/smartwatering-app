@@ -33,4 +33,15 @@ class EventRepository @Inject constructor(private val database: FirebaseDatabase
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun getNearestEvent(): Single<Event> {
+        return RxFirebaseDatabase.observeSingleValueEvent(database.getReference("events"), DataSnapshotMapper.listOf(Event::class.java))
+                .toObservable()
+                .flatMapIterable { it }
+                .filter { it.dateTime > System.currentTimeMillis() }
+                .sorted { event1, event2 -> (event1.dateTime - event2.dateTime).toInt() }
+                .firstOrError()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
 }
